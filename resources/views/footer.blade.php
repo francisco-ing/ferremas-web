@@ -7,8 +7,8 @@
 
             <!-- Enlaces de navegación -->
             <ul class="flex space-x-6 mt-4 md:mt-0">
-                <li><a href="#" class="hover:text-gray-300">Inicio</a></li>
-                <li><a href="#" class="hover:text-gray-300">Contacto</a></li>
+                <li><a href="/laravel/ferremas/public/" class="hover:text-gray-300">Inicio</a></li>
+                <li><a href="contact" class="hover:text-gray-300">Contacto</a></li>
             </ul>
         </div>
 

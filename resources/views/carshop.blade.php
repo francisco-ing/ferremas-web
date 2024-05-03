@@ -2,7 +2,6 @@
 @include('header')
 <div class="font-[sans-serif] bg-white">
       <div class="lg:max-w-7xl max-w-xl mx-auto">
-        <h2 class="text-3xl font-extrabold text-[#333]">Carrito</h2>
         <div class="grid lg:grid-cols-3 gap-8 items-start mt-8">
           <div class="divide-y lg:col-span-2">
 

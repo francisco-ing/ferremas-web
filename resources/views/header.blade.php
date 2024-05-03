@@ -84,7 +84,7 @@
 
     <!-- Selector de moneda -->
     <div class="relative mr-4">
-        <select class="bg-gray-800 text-white text-lg px-4 py-1.5 rounded-lg focus:outline-none">
+        <select class="bg-gray-800 text-white text-lg px-3 py-1.5 rounded-lg focus:outline-none">
             <option value="USD">CLP</option>
             <option value="EUR">USD</option>
             <option value="GBP">EUR</option>
