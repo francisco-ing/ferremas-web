@@ -112,142 +112,30 @@
             class="fixed left-0 bottom-0 flex w-3/4 -translate-x-full flex-col overflow-y-auto bg-gray-700 pt-6 pb-8 sm:max-w-xs lg:w-80" style="top: 0px;">
             <!-- one category / navigation group -->
 
-            <!-- Herramientas manuales -->
-            <div class="px-4 pb-6">
-                <h3 class="mb-4 text-xs font-medium uppercase text-gray-500">
-                    Herramientas
-                </h3>
-                <ul class="mb-8 text-sm font-medium">
-                    <li>
-                    <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600"
-                            href="product">
-                            <span class="select-none">Martillos</span>
-                        </a>
-                    </li>
+            @foreach ($categorias as $categoria)
+    <!-- Herramientas manuales -->
+    <div class="px-4 pb-6">
+        <h3 class="mb-4 text-xs font-medium uppercase text-gray-500">
+            {{ $categoria->nombre_categoria }}
+        </h3>
+        <ul class="mb-8 text-sm font-medium">
+            @foreach ($subcategorias as $subcategoria)
+                @if ($subcategoria->cod_categoria == $categoria->cod_categoria)
                     <li>
                         <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600"
-                            href="#link1">
-                            <span class="select-none">Desatornilladores</span>
+                           href="{{ route('product.index', ['cod_categoria' => $categoria->cod_categoria, 'cod_subcategoria' => $subcategoria->cod_subcategoria]) }}">
+                            <span class="select-none">{{ $subcategoria->nombre_subcategoria }}</span>
                         </a>
                     </li>
-                    <li>
-                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600"
-                            href="#link1">
-                            <span class="select-none">Llaves</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600"
-                            href="#link1">
-                            <span class="select-none">Herramientas Eléctricas</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600"
-                            href="#link1">
-                            <span class="select-none">Taladros</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600"
-                            href="#link1">
-                            <span class="select-none">Sierras</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600"
-                            href="#link1">
-                            <span class="select-none">Lijadoras</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+                @endif
+            @endforeach
+        </ul>
+    </div>
+@endforeach
 
-            <!-- Materiales Basicos -->
 
-            <div class="px-4 pb-6">
-                <h3 class="mb-4 text-xs font-medium uppercase text-gray-500">
-                    Materiales Basicos
-                </h3>
-                <ul class="mb-8 text-sm font-medium">
-                    <li>
-                    <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600"
-                            href="#link1">
-                            <span class="select-none">Cemento</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600"
-                            href="#link1">
-                            <span class="select-none">Arena</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600"
-                            href="#link1">
-                            <span class="select-none">Ladrillos</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600"
-                            href="#link1">
-                            <span class="select-none">Acabados</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600"
-                            href="#link1">
-                            <span class="select-none">Pinturas</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600"
-                            href="#link1">
-                            <span class="select-none">Barnices</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600"
-                            href="#link1">
-                            <span class="select-none">Cerámicos</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            
 
-            <!-- Equipos de seguridad -->
-
-            <div class="px-4 pb-6">
-                <h3 class="mb-4 text-xs font-medium uppercase text-gray-500">
-                    Equipo de Seguridad
-                </h3>
-                <ul class="mb-8 text-sm font-medium">
-                    <li>
-                    <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600"
-                            href="#link1">
-                            <span class="select-none">Cascos</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600"
-                            href="#link1">
-                            <span class="select-none">Guantes</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600"
-                            href="#link1">
-                            <span class="select-none">Lentes de seguridad</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600"
-                            href="#link1">
-                            <span class="select-none">Otros</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
 <!-- Sidebar end -->
 
 <script type="text/javascript">
