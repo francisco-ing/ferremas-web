@@ -37,9 +37,10 @@
         background: #1f2937;
         background-color: #1f2937;
     }
+    
 </style>
 
-<nav id="navbar" class="fixed top-0 z-40 flex w-full justify-between items-center bg-gray-700 px-4 sm:px-8">
+<nav id="navbar" class="sticky top-0 z-40 flex w-full justify-between items-center bg-gray-700 px-4 sm:px-8">
     <!-- Logo y menú hamburguesa -->
     <div class="flex items-center">
         <!-- Botón de menú hamburguesa -->
@@ -52,7 +53,7 @@
             </svg>
         </button>
           <!-- Logo como imagen -->
-          <a href="">
+          <a href="/laravel/ferremas/public/">
             <img src="{!! asset('images/Ferremas.png') !!}" alt="Ferremas" width="85px">
         </a>
     </div>
@@ -94,9 +95,9 @@
     <!-- Elementos a la derecha -->
     <div class="flex items-center">
         <!-- Iniciar Sesión -->
-        <a href="#" class="text-white mr-4">Iniciar Sesión</a>
+        <a href="login" class="text-white mr-4">Iniciar Sesión</a>
         <!-- Carrito -->
-        <a href="" class="text-white">
+        <a href="carshop" class="text-white">
             <img src="{!! asset('images/carrito.png') !!}" width="30px" alt="">
         </a>
     </div>
@@ -108,7 +109,7 @@
 <div id="containerSidebar" class="z-40">
     <div class="navbar-menu relative z-40">
         <nav id="sidebar"
-            class="fixed left-0 bottom-0 flex w-3/4 -translate-x-full flex-col overflow-y-auto bg-gray-700 pt-6 pb-8 sm:max-w-xs lg:w-80">
+            class="fixed left-0 bottom-0 flex w-3/4 -translate-x-full flex-col overflow-y-auto bg-gray-700 pt-6 pb-8 sm:max-w-xs lg:w-80" style="top: 0px;">
             <!-- one category / navigation group -->
 
             <!-- Herramientas manuales -->
@@ -119,7 +120,7 @@
                 <ul class="mb-8 text-sm font-medium">
                     <li>
                     <a class="flex items-center rounded py-3 pl-3 pr-4 text-gray-50 hover:bg-gray-600"
-                            href="#link1">
+                            href="product">
                             <span class="select-none">Martillos</span>
                         </a>
                     </li>
