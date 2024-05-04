@@ -11,11 +11,15 @@ class ProductController extends Controller
 
     public function deleteProductFromCart($cod_producto){
         $cart = session()->get('cart', []);
-    
+
         if(isset($cart[$cod_producto])){
-            unset($cart[$cod_producto]);
+            if($cart[$cod_producto]['quantity'] > 1){
+                $cart[$cod_producto]['quantity']--;
+            }else{
+                unset($cart[$cod_producto]);
+            }
             session()->put('cart', $cart);
-            return redirect()->back()->with('success', 'Producto eliminado del carrito!');
+            return redirect()->back()->with('success', 'Se eliminó un producto del carrito.');
         }else{
             return redirect()->back()->with('error', 'El producto no existe en el carrito.');
         }
