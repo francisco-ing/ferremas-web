@@ -1,6 +1,15 @@
 @include('header')
 
 <!-- Contenido de la página -->
+@if (Auth::check())
+@else
+    <!-- Contenido cuando el usuario no está autenticado -->
+    <div class="max-w-md mx-auto text-center">
+        <h1 class="text-3xl font-bold mb-4">¡Inicia Sesión para acceder a todas las funcionalidades y beneficios!</h1>
+        <!-- Puedes agregar más contenido o elementos aquí -->
+    </div>
+@endif
+
 
 <div class="container mx-auto py-8">
         <div
@@ -163,7 +172,12 @@
                         <h2 class="text-lg font-semibold text-gray-800">{{$producto->nombre_producto}}</h2>
                         <p class="text-sm text-gray-600">{{$producto->marca}}</p>
                         <p class="text-lg font-bold text-gray-700 mt-2">${{$producto->precio}}</p>
-                        <a class="mt-4 bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700" href="{{ route('addproduct.to.cart', ['cod_producto' => $producto->cod_producto]) }}">Agregar al carrito</a>
+                    @if (Auth::check())
+                           <a class="mt-4 bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700" href="{{ route('addproduct.to.cart', ['cod_producto' => $producto->cod_producto]) }}">Agregar al carrito</a>
+                    @else
+                    @endif
+
+                   
                     </div>
                 @endif
             @endforeach

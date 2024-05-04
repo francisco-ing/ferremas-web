@@ -56,6 +56,9 @@
           <a href="/laravel/ferremas/public/">
             <img src="{!! asset('images/Ferremas.png') !!}" alt="Ferremas" width="85px">
         </a>
+        @if (Auth::check())
+        <p class="text-white mr-4">Bienvenido, {{ Auth::user()->name }}!</p>
+        @endif
     </div>
 
     <!-- Espacio flexible para centrar -->
@@ -91,16 +94,23 @@
         </select>
     </div>
     
-
     <!-- Elementos a la derecha -->
+    @if (Auth::check())
     <div class="flex items-center">
-        <!-- Iniciar Sesión -->
-        <a href="login" class="text-white mr-4">Iniciar Sesión</a>
+        <form class="text-white mr-4" action="{{ route('logout') }}" method="post">
+        @csrf
+        <button type="submit">Cerrar sesión</button>
+        </form>
         <!-- Carrito -->
-        <a href="{{ route('shopping.cart') }} " class="text-white">
-            <img src="{!! asset('images/carrito.png') !!}" width="30px" alt="">
-        </a>
-    </div>
+        <a href="{{ route('shopping.cart') }} " class="text-white mr-4">
+                <img src="{!! asset('images/carrito.png') !!}" width="30px" alt="">
+            </a>
+        </div>
+        @else
+         <!-- Iniciar Sesión -->
+         <a href="login" class="text-white mr-4">Iniciar Sesión</a>
+    
+        @endif
 </nav>
 
 
