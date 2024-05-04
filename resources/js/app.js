@@ -1,8 +1,7 @@
 import './bootstrap';
-// Initialization for ES Users
-import {
-    Carousel,
-    initTWE,
-  } from "tw-elements";
-  
-  initTWE({ Carousel });
+
+import Alpine from 'alpinejs';
+
+window.Alpine = Alpine;
+
+Alpine.start();

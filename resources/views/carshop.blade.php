@@ -8,6 +8,7 @@
         <div class="grid lg:grid-cols-3 gap-8 items-start mt-8">
           <div class="divide-y lg:col-span-2">
 
+          
           @if(session('cart'))
             @foreach(session('cart') as $id => $details)
           <!--- PRODUCTO--->
@@ -19,7 +20,7 @@
                 <div>
                   <p class="text-md font-bold text-[#333]">{{ $details['nombre_producto']}}</p>
                   <p class="text-gray-400 text-xs mt-1">Cantidad: {{ $details['quantity']}}</p>
-                  <h4 class="text-xl font-bold text-[#333] mt-4">${{ $details['precio']*200}}</h4>
+                  <h4 class="text-xl font-bold text-[#333] mt-4">${{ $details['precio']}}</h4>
                 </div>
               </div>
               <form action="{{ route('delete.cart.product', ['cod_producto' => $id]) }}" method="POST">
@@ -30,21 +31,29 @@
             </div>
             
             @endforeach
-
+           
+            
           </div>
           <div class="bg-gray-100 p-8">
             <h3 class="text-2xl font-bold text-[#333]">Orden</h3>
             <ul class="text-[#333] mt-6 divide-y">
-              <li class="flex flex-wrap gap-4 text-md py-3">Subtotal <span class="ml-auto font-bold">$15.000</span></li>
-              <li class="flex flex-wrap gap-4 text-md py-3">Envio <span class="ml-auto font-bold">$5.000</span></li>
-              <li class="flex flex-wrap gap-4 text-md py-3">Impuestos <span class="ml-auto font-bold">$5.000</span></li>
-              <li class="flex flex-wrap gap-4 text-md py-3 font-bold">Total <span class="ml-auto">$25.000</span></li>
+              <li class="flex flex-wrap gap-4 text-md py-3">Subtotal <span class="ml-auto font-bold">${{ session('totalPrice') * 0.81 }}</span></li>
+              <li class="flex flex-wrap gap-4 text-md py-3">Envio <span class="ml-auto font-bold">$0</span></li>
+              <li class="flex flex-wrap gap-4 text-md py-3">Impuestos <span class="ml-auto font-bold">${{ session('totalPrice') * 0.19 }}</span></li>
+              <li class="flex flex-wrap gap-4 text-md py-3 font-bold">Total <span class="ml-auto">${{ session('totalPrice') }}</span></li>
             </ul>
             <button type="button" class="mt-6 text-md px-6 py-2.5 w-full bg-blue-600 hover:bg-blue-700 text-white rounded">Confirmar compra</button>
+            @else
+              <h1 class="text-3xl font-bold mb-4">Parece que tu carrito está vacío =(</h1>
+              <h2 class="text-xl font-semibold mb-6">Revisa nuestros mejores productos</h2>
+              <a href="/laravel/ferremas/public/" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                Ir a comprar
+              </a>
+            @endif  
           </div>
         </div>
       </div>
     </div>
-</div>           
-@endif  
+</div>    
+
 @include('footer')

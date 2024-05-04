@@ -149,16 +149,16 @@
                                 <h6 class="text-sm text-gray-400">Selecciona categoria  </h6>
                                 <div class="flex max-lg:flex-col lg:space-x-6 max-lg:space-y-6">
                                     <div class="flex items-center ps-4  ">
-                                        <input id="bordered-radio-1" type="radio" value="" name="bordered-radio" class="w-4 h-4 text-dark-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        <label for="bordered-radio-1" class="w-full py-4 ms-2 text-sm font-medium text-dark-900 dark:text-dark-300">Default radio</label>
+                                        <input id="bordered-radio-1" type="radio" value="" name="bordered-radio" class="w-4 h-4 text-dark-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                        <label for="bordered-radio-1" class="w-full py-4 ms-2 text-sm font-medium text-dark-900">Default radio</label>
                                     </div>
                                     <div class="flex items-center ps-4  ">
-                                        <input id="bordered-radio-1" type="radio" value="" name="bordered-radio" class="w-4 h-4 text-dark-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        <label for="bordered-radio-1" class="w-full py-4 ms-2 text-sm font-medium text-dark-900 dark:text-dark-300">Default radio</label>
+                                        <input id="bordered-radio-1" type="radio" value="" name="bordered-radio" class="w-4 h-4 text-dark-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                        <label for="bordered-radio-1" class="w-full py-4 ms-2 text-sm font-medium text-dark-900">Default radio</label>
                                     </div>
                                     <div class="flex items-center ps-4  ">
-                                        <input id="bordered-radio-1" type="radio" value="" name="bordered-radio" class="w-4 h-4 text-dark-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        <label for="bordered-radio-1" class="w-full py-4 ms-2 text-sm font-medium text-dark-900 dark:text-dark-300">Default radio</label>
+                                        <input id="bordered-radio-1" type="radio" value="" name="bordered-radio" class="w-4 h-4 text-dark-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                        <label for="bordered-radio-1" class="w-full py-4 ms-2 text-sm font-medium text-dark-900">Default radio</label>
                                     </div>
                                 </div>
                             </div>

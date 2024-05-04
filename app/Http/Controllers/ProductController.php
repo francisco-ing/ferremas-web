@@ -11,30 +11,45 @@ class ProductController extends Controller
 
     public function deleteProductFromCart($cod_producto){
         $cart = session()->get('cart', []);
-
+    
         if(isset($cart[$cod_producto])){
+            // Obtener el precio del producto que se va a eliminar
+            $deletedProductPrice = $cart[$cod_producto]['precio'];
+    
             if($cart[$cod_producto]['quantity'] > 1){
                 $cart[$cod_producto]['quantity']--;
-            }else{
+            } else {
                 unset($cart[$cod_producto]);
             }
+    
+            // Calcular el precio total restando el precio del producto eliminado
+            $totalPrice = session('totalPrice', 0) - $deletedProductPrice;
+    
+            // Si el producto eliminado era el último de su tipo, ajustar el precio total a 0
+            if(empty($cart)){
+                $totalPrice = 0;
+            }
+    
+            // Almacenar el carrito actualizado y el precio total actualizado en la sesión
             session()->put('cart', $cart);
+            session()->put('totalPrice', $totalPrice);
+    
             return redirect()->back()->with('success', 'Se eliminó un producto del carrito.');
-        }else{
+        } else {
             return redirect()->back()->with('error', 'El producto no existe en el carrito.');
         }
     }
     
     
-
+    
     public function addProducttoCart($cod_producto){
-        
         $product = DB::table('Producto')->where('cod_producto', $cod_producto)->first();
         $cart = session()->get('cart', []);
-
-        if(isset($cart{$cod_producto})){
+        $totalPrice = 0;
+        
+        if(isset($cart[$cod_producto])){
             $cart[$cod_producto]['quantity']++;
-        }else {
+        } else {
             $cart[$cod_producto] = [
                 "nombre_producto" => $product->nombre_producto,
                 "quantity" => 1,
@@ -42,7 +57,15 @@ class ProductController extends Controller
                 "marca" => $product->marca,
             ];
         }
+    
+        // Calcular el precio total
+        foreach($cart as $item) {
+            $totalPrice += $item['precio'] * $item['quantity'] ;
+        }
+    
         session()->put('cart', $cart);
+        session()->put('totalPrice', $totalPrice);
+    
         return redirect()->back()->with('success', 'Producto agregado al carrito!');
     }
 
@@ -84,9 +107,6 @@ class ProductController extends Controller
         return view('product', compact('categorias', 'subcategorias', 'productos'));
     }
     
-    
-    
-
     public function index(){
         list($categorias, $subcategorias, $productos) = $this->obtenerDatosComunes();
         return view("welcome", compact('categorias', 'subcategorias', 'productos'));
