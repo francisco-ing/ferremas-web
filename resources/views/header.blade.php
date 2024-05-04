@@ -97,7 +97,7 @@
         <!-- Iniciar Sesión -->
         <a href="login" class="text-white mr-4">Iniciar Sesión</a>
         <!-- Carrito -->
-        <a href="carshop" class="text-white">
+        <a href="{{ route('shopping.cart') }} " class="text-white">
             <img src="{!! asset('images/carrito.png') !!}" width="30px" alt="">
         </a>
     </div>
