@@ -35,7 +35,7 @@ Route::get('/product', [ProductController::class, 'mostrarProductos'])->name('pr
 
 Route::delete('/delete-cart-product/{cod_producto}', [ProductController::class, 'deleteProductFromCart'])->name('delete.cart.product');
 
-Route::get('/product/{cod_producto}', [ProductController::class, 'addProducttoCart'])->name('addproduct.to.cart');
+Route::post('/product/{cod_producto}', [ProductController::class, 'addProducttoCart'])->name('addproduct.to.cart');
 
 Route::get('/contact', [ProductController::Class, "indexContact"])->name("Product.index");
 

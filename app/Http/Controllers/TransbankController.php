@@ -43,6 +43,15 @@ class TransbankController extends Controller
         $nueva_compra = DB::table('compra')->where('id_compra', DB::getPdo()->lastInsertId())->first();
 
         $url_to_pay = $this->start_web_pay_plus_transaction($nueva_compra);
+
+                // Actualizar el stock de cada producto en el carrito
+                foreach ($cart as $item) {
+                    $nombre_producto = $item['nombre_producto'];
+                    $quantity = $item['quantity'];
+                    
+                    // Actualizar el stock del producto en la base de datos
+                    DB::update('UPDATE producto SET stock = stock - ? WHERE nombre_producto = ?', [$quantity, $nombre_producto]);
+                }    
         
         return response()->json(['url' => $url_to_pay]);
     }

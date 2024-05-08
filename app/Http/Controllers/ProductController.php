@@ -42,17 +42,19 @@ class ProductController extends Controller
     
     
     
-    public function addProducttoCart($cod_producto){
+    public function addProducttoCart(Request $request, $cod_producto){
         $product = DB::table('Producto')->where('cod_producto', $cod_producto)->first();
         $cart = session()->get('cart', []);
         $totalPrice = 0;
         
+        $quantity = $request->input('quantity', 1); // Obtener la cantidad del formulario
+    
         if(isset($cart[$cod_producto])){
-            $cart[$cod_producto]['quantity']++;
+            $cart[$cod_producto]['quantity'] += $quantity; // Aumentar la cantidad
         } else {
             $cart[$cod_producto] = [
                 "nombre_producto" => $product->nombre_producto,
-                "quantity" => 1,
+                "quantity" => $quantity,
                 "precio" => $product->precio,
                 "marca" => $product->marca,
             ];
@@ -68,6 +70,7 @@ class ProductController extends Controller
     
         return redirect()->back()->with('success', 'Producto agregado al carrito!');
     }
+    
 
     public function mostrarProductos() {
         $cod_subcategoria = request()->query('cod_subcategoria');

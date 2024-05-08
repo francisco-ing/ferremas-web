@@ -2,6 +2,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 @include('header')
+
 <div class="container mx-auto py-8">
 <div class="font-[sans-serif] bg-white">
       <div class="lg:max-w-7xl max-w-xl mx-auto">
@@ -19,20 +20,30 @@
                 </div>
                 <div>
                   <p class="text-md font-bold text-[#333]">{{ $details['nombre_producto']}}</p>
-                  <p class="text-gray-400 text-xs mt-1">Cantidad: {{ $details['quantity']}}</p>
-                  <h4 class="text-xl font-bold text-[#333] mt-4">${{ $details['precio']}}</h4>
+                  <h3 class="text-m font-bold text-[#333] mt-4">${{ $details['precio']}} C/u</h3>
+                  <h3 class="text-xl font-bold text-[#333] mt-4">$Total: {{ $details['precio'] * $details['quantity'] }}</h3>
                 </div>
               </div>
-              <form action="{{ route('delete.cart.product', ['cod_producto' => $id]) }}" method="POST">
-                  @csrf
-                  @method('DELETE')
-                  <button type="submit" class="btn btn-danger">Eliminar</button>
-              </form>
+
+              <div class="flex items-center justify-center mt-4">
+                  <form action="{{ route('delete.cart.product', ['cod_producto' => $id]) }}" method="POST">
+                      @csrf
+                      @method('DELETE')
+                      <button type="submit" class="bg-gray-300 text-gray-700 py-1 px-3 rounded-l-lg focus:outline-none focus:bg-gray-400">-</button>
+                  </form>
+                  <div class="mx-4 text-xl font-bold">{{ $details['quantity'] }}</div>
+                  <form action="{{ route('addproduct.to.cart', ['cod_producto' =>  $id]) }}" method="POST">
+                      @csrf    
+                      <button type="submit" class="bg-gray-300 text-gray-700 py-1 px-3 rounded-r-lg focus:outline-none focus:bg-gray-400">+</button>
+                  </form>
+              </div>
+
+              
+
             </div>
-            
+
             @endforeach
-           
-            
+ 
           </div>
           <div class="bg-gray-100 p-8">
             <h3 class="text-2xl font-bold text-[#333]">Orden</h3>
@@ -89,11 +100,14 @@
                 Ir a comprar
               </a>
             @endif  
+            
           </div>
         </div>
       </div>
     </div>
 </div>    
+
+
 <script>
     var openmodal = document.querySelectorAll('.modal-open')
     for (var i = 0; i < openmodal.length; i++) {
@@ -133,29 +147,25 @@
       modal.classList.toggle('pointer-events-none')
       body.classList.toggle('modal-active')
     }
-  
-    // CONTROLA LA URL DE WEBPAY 
-
-    document.getElementById('btnIniciarCompra').addEventListener('click', function() {
-        fetch('{{ route('iniciar_compra') }}')
-            .then(response => response.json())
-            .then(data => {
-                // Redirigir a la URL obtenida en la respuesta
-                window.location.href = data.url;
-            });
-    });
 
   // CONTROLA LA SELECCION DE METDODO DE PAGO
 
-    document.addEventListener("DOMContentLoaded", function() {
-  document.getElementById('btnIniciarCompra').addEventListener('click', function() {
-    var paymentMethod = document.getElementById('payment_method').value;
-    if (paymentMethod === 'TAR') {
-      window.location.href = '{{ route("iniciar_compra") }}';
-    } else if (paymentMethod === 'TRANS') {
-      window.location.href = 'transferencia'; // Reemplaza "transferencia" con la ruta correspondiente a tu vista de transferencia
-    }
-  });
+  document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById('btnIniciarCompra').addEventListener('click', function() {
+        var paymentMethod = document.getElementById('payment_method').value;
+        if (paymentMethod === 'TAR') {
+            fetch('{{ route('iniciar_compra') }}')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data); // Imprimir los datos en la consola
+                    window.location.href = data.url;
+                });
+        } else if (paymentMethod === 'TRANS') {
+            console.log('Redirigiendo a la vista de transferencia...');
+            window.location.href = 'transferencia'; // Reemplaza "transferencia" con la ruta correspondiente a tu vista de transferencia
+        }
+    });
 });
+
   </script>
 @include('footer')
