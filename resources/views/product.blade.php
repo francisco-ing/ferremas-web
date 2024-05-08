@@ -50,9 +50,9 @@
                         <img src="{!! asset('images/Ferremas.png') !!}" alt="Producto" class="w-full h-48 object-cover mb-4">
                         <h2 class="text-lg font-semibold text-gray-800">{{$producto->nombre_producto}}</h2>
                         <p class="text-sm text-gray-600">{{$producto->marca}}</p>
-                        <p class="text-lg font-bold text-gray-700 mt-2">${{$producto->precio}}</p>
+                        <p class="text-lg font-bold text-gray-700 mt-1">${{$producto->precio}}</p>
                         @if (Auth::check())
-                        <a class="mt-4 bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700" href="{{ route('addproduct.to.cart', ['cod_producto' => $producto->cod_producto]) }}">Agregar al carrito</a>
+                        <a class="mt-4 bg-gray-800 text-white py-1 px-4 rounded-lg hover:bg-gray-700" href="{{ route('addproduct.to.cart', ['cod_producto' => $producto->cod_producto]) }}">Agregar al carrito</a>
                         @else
                         @endif
                        

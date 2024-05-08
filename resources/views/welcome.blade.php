@@ -171,13 +171,15 @@
                         <img src="{!! asset('images/Ferremas.png') !!}" alt="Producto" class="w-full h-48 object-cover mb-4">
                         <h2 class="text-lg font-semibold text-gray-800">{{$producto->nombre_producto}}</h2>
                         <p class="text-sm text-gray-600">{{$producto->marca}}</p>
-                        <p class="text-lg font-bold text-gray-700 mt-2">${{$producto->precio}}</p>
-                    @if (Auth::check())
-                           <a class="mt-4 bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700" href="{{ route('addproduct.to.cart', ['cod_producto' => $producto->cod_producto]) }}">Agregar al carrito</a>
-                    @else
-                    @endif
-
-                   
+                        <p class="text-sm text-gray-600">Stock: {{$producto->stock}}</p>
+                        <p class="text-lg font-bold text-gray-700 mt-1">${{$producto->precio}}</p>
+                           @if (Auth::check())
+                           <div class="flex items-center mt-4">
+                              <input type="number" class="block w-16 bg-gray-100 border border-gray-300 text-gray-700 py-1 px-2 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" value="1" min="1">
+                              <a class="ml-2 bg-gray-800 text-white py-1 px-4 rounded-lg hover:bg-gray-700" href="{{ route('addproduct.to.cart', ['cod_producto' => $producto->cod_producto]) }}">Agregar al carrito</a>
+                          </div>
+                           @else
+                    @endif                
                     </div>
                 @endif
             @endforeach

@@ -131,6 +131,13 @@ class ProductController extends Controller
         list($categorias, $subcategorias, $productos) = $this->obtenerDatosComunes();
         return view("carshop", compact('categorias', 'subcategorias', 'productos'));
     }
+
+    public function indexTransferencia(){
+        list($categorias, $subcategorias, $productos) = $this->obtenerDatosComunes();
+        return view("transferencia", compact('categorias', 'subcategorias', 'productos'));
+    }
+
+    
     
     private function obtenerDatosComunes() {
         $categorias = DB::select("select * from categoria");
