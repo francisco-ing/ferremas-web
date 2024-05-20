@@ -1,4 +1,15 @@
-@include('header')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+     @vite('resources/js/app.js')
+     @vite('resources/css/app.css')
+    <title>Inicio</title>
+</head>
+
+
 <!-- Start block -->
 <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5 antialiased">
     <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
@@ -763,4 +774,3 @@
         </div>
     </div>
 </div>
-@include('footer')

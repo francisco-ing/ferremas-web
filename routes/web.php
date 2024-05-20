@@ -39,4 +39,6 @@ Route::post('/product/{cod_producto}', [ProductController::class, 'addProducttoC
 
 Route::get('/contact', [ProductController::Class, "indexContact"])->name("Product.index");
 
+Route::view('/admin', 'admin');
+
 require __DIR__.'/auth.php';

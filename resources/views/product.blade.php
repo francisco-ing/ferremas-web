@@ -37,12 +37,13 @@
             <!-- Ejemplo de tarjeta de producto -->
             @foreach ($productos as $producto)
                     <div class="bg-white rounded-lg shadow-md p-4">
-                        <img src="{!! asset('images/Ferremas.png') !!}" alt="Producto" class="w-full h-48 object-cover mb-4">
+                        <img src="{{$producto->imagen_producto}}" alt="Producto" style="display: block; margin: auto;  width: 200px !important; height: 200px !important;">
                         <h2 class="text-lg font-semibold text-gray-800">{{$producto->nombre_producto}}</h2>
                         <p class="text-sm text-gray-600">{{$producto->marca}}</p>
                         <p class="text-sm text-gray-600">Stock disponible: {{$producto->stock}}</p>
                         <p class="text-lg font-bold text-gray-700 mt-1">${{$producto->precio}}</p>
                            @if (Auth::check())
+                           @if ($producto->stock > 0)
                            <form action="{{ route('addproduct.to.cart', ['cod_producto' => $producto->cod_producto]) }}" method="POST">
                               @csrf
                               <div class="flex items-center mt-4">
@@ -51,7 +52,8 @@
                               </div>
                             </form>
                            @else
-                    @endif                
+                    @endif    
+                    @endif               
                     </div>
             @endforeach
 

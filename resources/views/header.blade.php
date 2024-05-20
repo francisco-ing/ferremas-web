@@ -40,6 +40,8 @@
     
 </style>
 
+
+
 <nav id="navbar" class="sticky top-0 z-40 flex w-full justify-between items-center bg-gray-700 px-4 sm:px-8">
     <!-- Logo y menú hamburguesa -->
     <div class="flex items-center">
