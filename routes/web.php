@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\TransbankController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +40,41 @@ Route::post('/product/{cod_producto}', [ProductController::class, 'addProducttoC
 
 Route::get('/contact', [ProductController::Class, "indexContact"])->name("Product.index");
 
-Route::view('/admin', 'admin');
+Route::get('/admin', [ClientController::class, 'index'])->name('admin');
+
+
+// RUTA PARA VENDEDOR
+Route::get('/vendedor', function () {
+    if (Auth::check()) {
+        $user = Auth::user();    
+        if (!empty($user->rol_usuario) && $user->rol_usuario == 'vendedor') {
+            return view('vendedor');
+        }
+    }
+    return redirect('/');
+});
+
+// RUTA PARA BODEGUERO
+Route::get('/bodeguero', function () {
+    if (Auth::check()) {
+        $user = Auth::user();
+        if (!empty($user->rol_usuario) && $user->rol_usuario == 'bodeguero') {
+            return view('bodeguero');
+        }
+    }
+    return redirect('/');
+});
+
+// RUTA PARA CONTADOR
+Route::get('/contador', function () {
+    if (Auth::check()) {
+        $user = Auth::user();
+        if (!empty($user->rol_usuario) && $user->rol_usuario == 'contador') {
+            return view('contador');
+        }
+    }
+    
+    return redirect('/');
+});
 
 require __DIR__.'/auth.php';
