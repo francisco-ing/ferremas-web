@@ -14,10 +14,7 @@ class TransbankController extends Controller
     public function __construct()
     {
         if (app()->environment('production')){
-            WebpayPlus::configureForProduction(
-                env('webpay_plus_cc'),
-                env('webpay_plus_api_key')
-            );
+            WebpayPlus::configureForTesting();
 
         } else {
             WebpayPlus::configureForTesting();
