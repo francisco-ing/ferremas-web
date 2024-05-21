@@ -3,6 +3,7 @@
 use App\Http\Controllers\TransbankController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductApiController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +43,9 @@ Route::get('/contact', [ProductController::Class, "indexContact"])->name("Produc
 
 Route::get('/admin', [ClientController::class, 'index'])->name('admin');
 
+// RUTA PARA API
+
+Route::apiResource('producto', ProductApiController::class);
 
 // RUTA PARA VENDEDOR
 Route::get('/vendedor', function () {
