@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +22,16 @@ class ClientController extends Controller
         }
         return redirect('/');
     }
+
+
+
+    public function confirmacionCompra($userEmail, $purchaseDetails)
+    {
+        Mail::send('emails.purchase_confirmation', ['purchaseDetails' => $purchaseDetails], function ($message) use ($userEmail) {
+            $message->to($userEmail)->subject('Confirmación de compra');
+        });
+    }
+
     
 }
 

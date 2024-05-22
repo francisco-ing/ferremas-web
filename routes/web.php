@@ -25,11 +25,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::post('/actualizar.precio', [ProductController::class, 'actualizarPrecio'])->name('actualizar.precio');
+
 Route::get('/', [ProductController::Class, "index"])->name("Product.index");
 
 Route::get('/carshop', [ProductController::Class, "indexCarshop"])->name("Product.index");
 
 Route::get('/transferencia', [ProductController::Class, "indexTransferencia"])->name("Product.index");
+
+Route::get('/ticket_compra', [ProductController::Class, "indexTicketCompra"])->name("Product.index");
 
 Route::get('/carshop', [ProductController::class, 'indexCarshop'])->name('shopping.cart');
 

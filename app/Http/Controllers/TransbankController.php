@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Transbank\Webpay\WebpayPlus;
@@ -20,6 +21,7 @@ class TransbankController extends Controller
             WebpayPlus::configureForTesting();
         }
     }
+    
 
   
 
@@ -67,7 +69,21 @@ class TransbankController extends Controller
 
     public function confirmar_pago(Request $request)
     {
-        return $request;
+        // Obtén los datos del carrito y el precio total desde la sesión
+        $cart = $request->session()->get('cart', []);
+        $totalPrice = $request->session()->get('totalPrice', 0);
+        $user = Auth::user();
+    
+        // Envía el correo electrónico con una vista
+       // Mail::send('confirmacion_pago', compact('cart', 'totalPrice', 'user'), function($message) use ($user) {
+       //     $message->to($user->email)
+       //             ->subject('Confirmación de pago');
+       // });
+    
+        // Retorno o redirección después de enviar el correo
+        return view('ticket_compra');
     }
+    
+    
 
 }

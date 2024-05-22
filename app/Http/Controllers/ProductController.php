@@ -140,6 +140,10 @@ class ProductController extends Controller
         return view("transferencia", compact('categorias', 'subcategorias', 'productos'));
     }
 
+    public function indexTicketCompra(){
+        list($categorias, $subcategorias, $productos) = $this->obtenerDatosComunes();
+        return view("ticket_compra", compact('categorias', 'subcategorias', 'productos'));
+    }
     
     
     private function obtenerDatosComunes() {
@@ -148,5 +152,36 @@ class ProductController extends Controller
         $productos = DB::select("select * from producto");
         return [$categorias, $subcategorias, $productos];
     }
-    
+
+    public function actualizarPrecio(Request $request)
+    {
+        // Obtener el tipo de entrega del formulario
+        $deliveryType = $request->input('deliveryType_hidden');
+        
+        // Obtener el precio total actual de la sesión
+        $totalPrice = session('totalPrice');
+
+        // Verificar si el tipo de entrega es "despacho"
+        if ($deliveryType === 'retiro') {
+            // Agregar $5000 al precio total
+            $totalPrice += 5000;
+        }
+
+        // Obtener los valores de la dirección de los campos ocultos
+        $street = $request->input('street_hidden');
+        $city = $request->input('city_hidden');
+        $zipcode = $request->input('zipcode_hidden');
+
+        // Guardar los valores de la dirección en la sesión
+        session(['street' => $street]);
+        session(['city' => $city]);
+        session(['zipcode' => $zipcode]);
+        session(['deliveryType' => $deliveryType]);
+
+        // Actualizar el precio en la sesión
+        session(['totalPrice' => $totalPrice]);
+
+        // Redirigir de vuelta a la página anterior
+        return redirect()->back();
+    }
 }
