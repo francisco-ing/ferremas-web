@@ -4,8 +4,10 @@ use App\Http\Controllers\TransbankController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductApiController;
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 Route::get('/iniciar_compra', [TransbankController::class, 'iniciar_compra'])->name('iniciar_compra');
 
@@ -15,9 +17,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/register', [AdminUserController::class, 'create'])->name('admin.register.create');
+    Route::post('/admin/register', [AdminUserController::class, 'store'])->name('admin.register.store');
+});
+
+Route::middleware(['auth', 'can:isAdmin'])->group(function () {
+    Route::post('/register', [RegisteredUserController::class, 'store'])->name('register');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

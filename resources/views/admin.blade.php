@@ -52,8 +52,12 @@
                 <td class="w-1/4 text-left py-3 px-4">{{ $user->email }}</td>
                 <td class="w-1/4 text-left py-3 px-4">{{ $user->rol_usuario }}</td>
                 <td class="text-left py-3 px-4">
-                    <button class="text-blue-500 hover:underline" onclick="openEditForm('{{ $user->id }}')">Editar</button>
-                    <button class="text-red-500 hover:underline ml-2" onclick="deleteUser('{{ $user->id }}')">Eliminar</button>
+                    <button class="text-red-500 hover:underline ml-2"
+                            onclick="confirmDelete('{{ $user->id }}')">Eliminar</button>
+                    <form id="delete-user-{{ $user->id }}" action="{{ route('users.destroy', $user) }}" method="POST" style="display: none;">
+                        @csrf
+                        @method('DELETE')
+                    </form>
                 </td>
             </tr>
         @endif
@@ -70,28 +74,52 @@
             <div class="mt-3 text-center">
                 <h3 class="text-lg leading-6 font-medium text-gray-900">Crear Usuario</h3>
                 <div class="mt-2 px-7 py-3">
-                    <form id="createUser" class="space-y-4">
-                        <div>
-                            <label for="name" class="block text-left text-sm font-medium text-gray-700">Nombre</label>
-                            <input type="text" name="name" id="name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        </div>
-                        <div>
-                            <label for="email" class="block text-left text-sm font-medium text-gray-700">Email</label>
-                            <input type="email" name="email" id="email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        </div>
-                        <div>
-                            <label for="rol" class="block text-left text-sm font-medium text-gray-700">Rol</label>
-                            <input type="rol" name="rol" id="rol" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        </div>
-                        <div>
-                            <label for="password" class="block text-left text-sm font-medium text-gray-700">Contraseña</label>
-                            <input type="password" name="password" id="password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        </div>
-                        <div class="flex justify-end">
-                            <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded mr-2" onclick="closeForm('createUserForm')">Cancelar</button>
-                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Crear</button>
-                        </div>
-                    </form>
+   <form method="POST" action="{{ route('admin.register.store') }}">
+            @csrf
+
+            <!-- Name -->
+            <div class="mb-4">
+                <x-input-label for="name" :value="__('Nombre')" />
+                <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+                <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            </div>
+
+            <!-- Email Address -->
+            <div class="mb-4">
+                <x-input-label for="email" :value="__('Correo electronico')" />
+                <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
+                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            </div>
+
+            <!-- Password -->
+            <div class="mb-4">
+                <x-input-label for="password" :value="__('Contraseña')" />
+                <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+                <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mb-4">
+                <x-input-label for="password_confirmation" :value="__('Confirmar contraseña')" />
+                <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
+                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+            </div>
+
+            <!-- Rol Usuario -->
+            <div class="mb-4">
+                <x-input-label for="rol_usuario" :value="__('Rol de Usuario')" />
+                <x-text-input id="rol_usuario" class="block mt-1 w-full" type="text" name="rol_usuario" :value="old('rol_usuario')" required />
+                <x-input-error :messages="$errors->get('rol_usuario')" class="mt-2" />
+            </div>
+
+            <div class="flex items-center justify-end mt-4">
+                <button type="submit" class="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+                    Crear nuevo usuario
+                </button>
+            </div>
+        </form>
+
+                    
                 </div>
             </div>
         </div>
@@ -138,11 +166,12 @@
             document.getElementById(formId).classList.add('hidden');
         }
 
-        function deleteUser() {
-            if (confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
-                // Lógica para eliminar usuario
-            }
+        function confirmDelete(userId) {
+        if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
+            // Obtener el formulario de eliminación por su ID y enviarlo
+            document.getElementById('delete-user-' + userId).submit();
         }
+    }
     </script>
 </body>
 </html>
