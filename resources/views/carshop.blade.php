@@ -204,8 +204,7 @@
                     window.location.href = data.url;
                 });
         } else if (paymentMethod === 'TRANS') {
-            console.log('Redirigiendo a la vista de transferencia...');
-            window.location.href = 'transferencia'; // Reemplaza "transferencia" con la ruta correspondiente a tu vista de transferencia
+          window.location.href = '{{ route('compra_transferencia') }}';
         }
     });
 });

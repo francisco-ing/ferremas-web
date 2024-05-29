@@ -62,28 +62,8 @@
         <p class="text-white mr-4">Bienvenido, {{ Auth::user()->name }}!</p>
         @endif
     </div>
-
-    <!-- Espacio flexible para centrar -->
     <div class="flex-grow"></div>
-
     <div class="w-[250px] lg:pe-2">
-    <div class="relative flex w-full flex-wrap items-stretch">
-        <input
-            type="search"
-            class="relative m-0 -me-0.5 block w-[1px] min-w-0 flex-auto rounded-s border border-solid border-secondary-500 bg-transparent bg-clip-padding px-2 py-1 text-sm font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-gray-700 focus:shadow-inset focus:outline-none"
-            placeholder="Buscar en Ferremas"
-            aria-label="Search"
-            aria-describedby="button-addon3" />
-        
-        <!-- Botón de búsqueda -->
-        <button
-            class="relative z-[2] rounded-e border-2 border-secondary px-4 pb-[4px] pt-1 text-xs font-medium uppercase leading-normal text-primary transition duration-150 ease-in-out hover:border-primary-accent-300 hover:bg-primary-50/50 hover:text-primary-accent-300 focus:border-primary-600 focus:bg-primary-50/50 focus:text-primary-600 focus:outline-none focus:ring-0 active:border-primary-700 active:text-primary-700 motion-reduce:transition-none"
-            type="button"
-            id="button-addon3"
-            data-twe-ripple-init>
-            <img src="{!! asset('images/buscar.png') !!}" width="25px" alt="Buscar">
-        </button>
-    </div>
 </div>
     
     <!-- Elementos a la derecha -->

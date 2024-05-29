@@ -9,6 +9,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 
+Route::get('/transferencia', [ProductController::class, 'compra_transferencia'])->name('compra_transferencia');
+
 Route::get('/iniciar_compra', [TransbankController::class, 'iniciar_compra'])->name('iniciar_compra');
 
 Route::get('/confirmar_pago', [TransbankController::class, 'confirmar_pago'])->name('confirmar_pago');
@@ -40,8 +42,6 @@ Route::get('/', [ProductController::Class, "index"])->name("Product.index");
 
 Route::get('/carshop', [ProductController::Class, "indexCarshop"])->name("Product.index");
 
-Route::get('/transferencia', [ProductController::Class, "indexTransferencia"])->name("Product.index");
-
 Route::get('/ticket_compra', [ProductController::Class, "indexTicketCompra"])->name("Product.index");
 
 Route::get('/carshop', [ProductController::class, 'indexCarshop'])->name('shopping.cart');
@@ -55,6 +55,9 @@ Route::post('/product/{cod_producto}', [ProductController::class, 'addProducttoC
 Route::get('/contact', [ProductController::Class, "indexContact"])->name("Product.index");
 
 Route::get('/admin', [ClientController::class, 'index'])->name('admin');
+
+// Ruta para cambiar el estado de despachado
+Route::post('/cambiar-despachado/{id}', [ProductController::class, 'cambiarDespachado'])->name('cambiar_despachado');
 
 // RUTA PARA API
 
@@ -83,15 +86,18 @@ Route::get('/bodeguero', function () {
 });
 
 // RUTA PARA CONTADOR
-Route::get('/contador', function () {
-    if (Auth::check()) {
+Route::middleware(['auth'])->group(function () {
+    Route::get('/contador', function () {
         $user = Auth::user();
         if (!empty($user->rol_usuario) && $user->rol_usuario == 'contador') {
             return view('contador');
+        } else {
+            return redirect('/');
         }
-    }
-    
-    return redirect('/');
+    });
+
+    // Ruta para mostrar las compras
+    Route::get('/contador', [ProductController::class, 'mostrarCompras']);
 });
 
 require __DIR__.'/auth.php';

@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Transbank\Webpay\WebpayPlus;
+use Transbank\Webpay\WebpayPlus\Transaction;
 use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
@@ -135,11 +140,6 @@ class ProductController extends Controller
         return view("carshop", compact('categorias', 'subcategorias', 'productos'));
     }
 
-    public function indexTransferencia(){
-        list($categorias, $subcategorias, $productos) = $this->obtenerDatosComunes();
-        return view("transferencia", compact('categorias', 'subcategorias', 'productos'));
-    }
-
     public function indexTicketCompra(){
         list($categorias, $subcategorias, $productos) = $this->obtenerDatosComunes();
         return view("ticket_compra", compact('categorias', 'subcategorias', 'productos'));
@@ -183,5 +183,43 @@ class ProductController extends Controller
 
         // Redirigir de vuelta a la página anterior
         return redirect()->back();
+    }
+
+    public function compra_transferencia(Request $request) {
+
+        $tipo_delivery = $request->session()->get('deliveryType');
+        $calle = $request->session()->get('street');
+        $cart = $request->session()->get('cart', []);
+        $totalPrice = $request->session()->get('totalPrice', 0);
+        $user = Auth::user();
+
+       // Crear nueva compra y guardar en la base de datos
+       DB::table('compra_transferencia')->insert([
+        'precio_total' => $totalPrice, // Suponiendo que $totalPrice está definido en tu código
+        'tipo_despacho' => $tipo_delivery,
+        'datos_despacho' => $calle, 
+        'usuario' => $user->email
+    ]);
+
+    Mail::send('confirmacion_pago', compact('cart', 'totalPrice', 'user'), function($message) use ($user) {
+        $message->to($user->email)
+                ->subject('Confirmación de pago');
+    });
+
+        // Redirigir a la vista transferencia
+        return view('transferencia');
+    }
+    
+
+    public function mostrarCompras() {
+        $compras = DB::table('compra_transferencia')->where('despachado', false)->get();
+
+        return view('contador', ['compras' => $compras]);
+    }
+
+    public function cambiarDespachado(Request $request, $id) {
+        DB::table('compra_transferencia')->where('id_compra', $id)->update(['despachado' => true]);
+
+        return redirect()->back()->with('success', 'Compra marcada como despachada correctamente.');
     }
 }
