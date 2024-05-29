@@ -52,8 +52,8 @@
                         <td class="px-4 py-2">{{ $compra->datos_despacho }}</td>
                         <td class="px-4 py-2">{{ $compra->usuario }}</td>
                         <td class="px-4 py-2">
-                            {{ $compra->despachado ? 'Sí' : 'No' }}
-                            @if (!$compra->despachado)
+                            {{ $compra->transferencia_pagada ? 'Sí' : 'No' }}
+                            @if (!$compra->transferencia_pagada)
                                 <form id="form-despachar-{{ $compra->id_compra }}" action="{{ route('cambiar_despachado', ['id' => $compra->id_compra]) }}" method="POST">
                                     @csrf
                                     <button onclick="confirmDespachar({{ $compra->id_compra }})" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">

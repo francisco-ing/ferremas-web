@@ -32,18 +32,21 @@ class TransbankController extends Controller
         $totalPrice = $request->session()->get('totalPrice', 0);
         $user = Auth::user();
 
-        if ($tipo_delivery == 'retiro'){
-            $tipo_delivery == 'Despacho a domicilio';
-        }else if ($tipo_delivery == 'despacho'){
-            $tipo_delivery == 'Retiro en local';
-        };
+        if ($tipo_delivery == 'retiro') {
+            $tipo_delivery = 'Despacho a domicilio';
+        } else if ($tipo_delivery == 'despacho') {
+            $tipo_delivery = 'Retiro en local';
+        }
+        
 
         // Crear nueva compra y guardar en la base de datos
         DB::table('compra')->insert([
-            'total_compra' => $totalPrice, // Suponiendo que $totalPrice está definido en tu código
+            'precio_total' => $totalPrice,
             'tipo_pago' => 'Tarjeta',
             'tipo_despacho' => $tipo_delivery, 
-            'cliente' => $user->email
+            'despachado' => false,
+            'datos_despacho' =>$calle,
+            'usuario' => $user->email
         ]);
 
         // Recuperar el ID de la última compra insertada
@@ -68,7 +71,7 @@ class TransbankController extends Controller
         $transaccion = (new Transaction)->create(
             $nueva_compra->id_compra,
             $nueva_compra->id_compra,
-            $nueva_compra->total_compra,
+            $nueva_compra->precio_total,
             route('confirmar_pago')
         );
         $url = $transaccion->getUrl().'?token_ws='.$transaccion->getToken();

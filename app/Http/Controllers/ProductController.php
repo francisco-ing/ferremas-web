@@ -144,6 +144,8 @@ class ProductController extends Controller
         list($categorias, $subcategorias, $productos) = $this->obtenerDatosComunes();
         return view("ticket_compra", compact('categorias', 'subcategorias', 'productos'));
     }
+
+
     
     
     private function obtenerDatosComunes() {
@@ -193,13 +195,35 @@ class ProductController extends Controller
         $totalPrice = $request->session()->get('totalPrice', 0);
         $user = Auth::user();
 
+        if ($tipo_delivery == 'retiro') {
+            $tipo_delivery = 'Despacho a domicilio';
+        } else if ($tipo_delivery == 'despacho') {
+            $tipo_delivery = 'Retiro en local';
+        }
+        
+
        // Crear nueva compra y guardar en la base de datos
-       DB::table('compra_transferencia')->insert([
+       DB::table('compra')->insert([
         'precio_total' => $totalPrice, // Suponiendo que $totalPrice está definido en tu código
         'tipo_despacho' => $tipo_delivery,
+        'tipo_pago' => 'Transferencia',
         'datos_despacho' => $calle, 
-        'usuario' => $user->email
+        'despachado' => false,
+        'usuario' => $user->email,
+        'transferencia_pagada' => false,
     ]);
+
+    // Obtener el ID de la última compra insertada
+    $compraId = DB::getPdo()->lastInsertId();
+
+    // Guardar los productos y sus cantidades en la tabla de detalles de compra
+    foreach ($cart as $item) {
+        DB::table('detalles_compra')->insert([
+            'id_compra' => $compraId,
+            'nombre_producto' => $item['nombre_producto'],
+            'cantidad' => $item['quantity']
+        ]);
+    }
 
     Mail::send('confirmacion_pago', compact('cart', 'totalPrice', 'user'), function($message) use ($user) {
         $message->to($user->email)
@@ -212,14 +236,38 @@ class ProductController extends Controller
     
 
     public function mostrarCompras() {
-        $compras = DB::table('compra_transferencia')->where('despachado', false)->get();
+        $compras = DB::table('compra')->where('transferencia_pagada', false)->get();
 
         return view('contador', ['compras' => $compras]);
     }
 
+    public function mostrarComprasVendedor() {
+        $compras = DB::table('compra')->where('despachado', false)->get();
+
+        return view('vendedor', ['compras' => $compras]);
+    }
+
     public function cambiarDespachado(Request $request, $id) {
-        DB::table('compra_transferencia')->where('id_compra', $id)->update(['despachado' => true]);
+        DB::table('compra')->where('id_compra', $id)->update(['transferencia_pagada' => true]);
 
         return redirect()->back()->with('success', 'Compra marcada como despachada correctamente.');
     }
+
+    public function indexVendedor()
+    {
+        $user = Auth::user();
+        if (!empty($user->rol_usuario) && $user->rol_usuario == 'vendedor') {
+            // Obtener datos comunes
+            list($categorias, $subcategorias, $productos) = $this->obtenerDatosComunes();
+            
+            // Obtener compras del vendedor
+            $compras = DB::table('compra')->where('despachado', false)->get();
+            
+            // Devolver vista con todos los datos
+            return view("vendedor", compact('categorias', 'subcategorias', 'productos', 'compras'));
+        } else {
+            return redirect('/');
+        }
+    }
+
 }

@@ -63,26 +63,19 @@ Route::post('/cambiar-despachado/{id}', [ProductController::class, 'cambiarDespa
 
 Route::apiResource('producto', ProductApiController::class);
 
-// RUTA PARA VENDEDOR
-Route::get('/vendedor', function () {
-    if (Auth::check()) {
-        $user = Auth::user();    
-        if (!empty($user->rol_usuario) && $user->rol_usuario == 'vendedor') {
-            return view('vendedor');
-        }
-    }
-    return redirect('/');
-});
-
 // RUTA PARA BODEGUERO
 Route::get('/bodeguero', function () {
     if (Auth::check()) {
-        $user = Auth::user();
+        $user = Auth::user();    
         if (!empty($user->rol_usuario) && $user->rol_usuario == 'bodeguero') {
             return view('bodeguero');
         }
     }
     return redirect('/');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/vendedor', [ProductController::class, "indexVendedor"])->name("vendedor.index");
 });
 
 // RUTA PARA CONTADOR
