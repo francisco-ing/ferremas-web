@@ -40,7 +40,7 @@
                         <th class="px-4 py-2">Tipo de Despacho</th>
                         <th class="px-4 py-2">Datos de Despacho</th>
                         <th class="px-4 py-2">Usuario</th>
-                        <th class="px-4 py-2">Despachado</th>
+                        <th class="px-4 py-2">Transferencia realizada</th>
                     </tr>
                 </thead>
                 <tbody>

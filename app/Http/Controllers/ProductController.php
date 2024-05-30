@@ -48,7 +48,7 @@ class ProductController extends Controller
     
     
     public function addProducttoCart(Request $request, $cod_producto){
-        $product = DB::table('Producto')->where('cod_producto', $cod_producto)->first();
+        $product = DB::table('producto')->where('cod_producto', $cod_producto)->first();
         $cart = session()->get('cart', []);
         $totalPrice = 0;
         
@@ -247,11 +247,7 @@ class ProductController extends Controller
         return view('vendedor', ['compras' => $compras]);
     }
 
-    public function cambiarDespachado(Request $request, $id) {
-        DB::table('compra')->where('id_compra', $id)->update(['transferencia_pagada' => true]);
 
-        return redirect()->back()->with('success', 'Compra marcada como despachada correctamente.');
-    }
 
     public function indexVendedor()
     {
@@ -268,6 +264,60 @@ class ProductController extends Controller
         } else {
             return redirect('/');
         }
+    }
+
+    public function indexBodeguero()
+{
+    $user = Auth::user();
+    if (!empty($user->rol_usuario) && $user->rol_usuario == 'bodeguero') {
+        // Obtener datos comunes
+        list($categorias, $subcategorias, $productos) = $this->obtenerDatosComunes();
+        
+        // Realizar la consulta para obtener las compras y sus detalles
+        $comprasConDetalles = DB::table('compra')
+            ->join('detalles_compra', 'compra.id_compra', '=', 'detalles_compra.id_compra')
+            ->select('compra.picking', 'compra.id_compra', 'compra.tipo_despacho', 'compra.datos_despacho', 'detalles_compra.nombre_producto', 'detalles_compra.cantidad')
+            ->where('compra.despachado', false)
+            ->get();
+        
+        // Agrupar los resultados en PHP
+        $comprasAgrupadas = [];
+        foreach ($comprasConDetalles as $detalle) {
+            $idCompra = $detalle->id_compra;
+
+            if (!isset($comprasAgrupadas[$idCompra])) {
+                $comprasAgrupadas[$idCompra] = [
+                    'id_compra' => $idCompra,
+                    'tipo_despacho' => $detalle->tipo_despacho,
+                    'picking' =>$detalle->picking,
+                    'datos_despacho' => $detalle->datos_despacho,
+                    'detalles' => []
+                ];
+            }
+
+            $comprasAgrupadas[$idCompra]['detalles'][] = [
+                'nombre_producto' => $detalle->nombre_producto,
+                'cantidad' => $detalle->cantidad,
+            ];
+        }
+        
+        // Devolver vista con todos los datos
+        return view("bodeguero", compact('categorias', 'subcategorias', 'productos', 'comprasAgrupadas'));
+    } else {
+        return redirect('/');
+    }
+}
+
+    public function cambiarDespachado(Request $request, $id) {
+        DB::table('compra')->where('id_compra', $id)->update(['transferencia_pagada' => true]);
+
+        return redirect()->back()->with('success', 'Compra marcada como despachada correctamente.');
+    }
+
+    public function confirmDespacho(Request $request, $id) {
+        DB::table('compra')->where('id_compra', $id)->update(['picking' => true]);
+
+        return redirect()->back()->with('success', 'Compra marcada como despachada correctamente.');
     }
 
 }

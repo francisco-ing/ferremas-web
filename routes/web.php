@@ -56,22 +56,15 @@ Route::get('/contact', [ProductController::Class, "indexContact"])->name("Produc
 
 Route::get('/admin', [ClientController::class, 'index'])->name('admin');
 
-// Ruta para cambiar el estado de despachado
-Route::post('/cambiar-despachado/{id}', [ProductController::class, 'cambiarDespachado'])->name('cambiar_despachado');
+
 
 // RUTA PARA API
 
 Route::apiResource('producto', ProductApiController::class);
 
 // RUTA PARA BODEGUERO
-Route::get('/bodeguero', function () {
-    if (Auth::check()) {
-        $user = Auth::user();    
-        if (!empty($user->rol_usuario) && $user->rol_usuario == 'bodeguero') {
-            return view('bodeguero');
-        }
-    }
-    return redirect('/');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/bodeguero', [ProductController::class, "indexBodeguero"])->name("bodeguero.index");
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -92,5 +85,11 @@ Route::middleware(['auth'])->group(function () {
     // Ruta para mostrar las compras
     Route::get('/contador', [ProductController::class, 'mostrarCompras']);
 });
+
+// Ruta para cambiar el estado de despachado
+Route::post('/cambiar-despachado/{id}', [ProductController::class, 'cambiarDespachado'])->name('cambiar_despachado');
+
+Route::post('/confirm-despacho/{id}', [ProductController::class, 'confirmDespacho'])->name('confirm-despacho');
+
 
 require __DIR__.'/auth.php';

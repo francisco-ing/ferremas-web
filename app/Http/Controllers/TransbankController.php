@@ -84,6 +84,18 @@ class TransbankController extends Controller
         $cart = $request->session()->get('cart', []);
         $totalPrice = $request->session()->get('totalPrice', 0);
         $user = Auth::user();
+
+        $compraId = DB::table('compra')->orderBy('id_compra', 'desc')->value('id_compra');
+
+
+        // Guardar los productos y sus cantidades en la tabla de detalles de compra
+        foreach ($cart as $item) {
+            DB::table('detalles_compra')->insert([
+            'id_compra' => $compraId,
+            'nombre_producto' => $item['nombre_producto'],
+            'cantidad' => $item['quantity']
+            ]);
+        }
     
         // Envía el correo electrónico con una vista
        Mail::send('confirmacion_pago', compact('cart', 'totalPrice', 'user'), function($message) use ($user) {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listado de Compras</title>
+    <title>Bodegueros</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
@@ -12,7 +12,7 @@
             <div class="flex items-center justify-center h-full">
                 <div>
                     <a class="font-bold text-xl text-gray-800" href="#">
-                        Dashboard Vendedor
+                        Dashboard Bodeguero
                     </a>
                 </div>
 
@@ -27,7 +27,8 @@
             </div>
         </div>
 </header>
-<div class="container mx-auto mt-20">
+
+<div class="container mx-auto mt-8">
     <h1 class="text-3xl font-bold mb-6">Lista de Productos</h1>
 
     <div class="overflow-x-auto">
@@ -61,7 +62,7 @@
 <!-- vendedor.blade.php -->
 
 <div class="container mx-auto mt-8">
-    <h1 class="text-3xl font-bold mb-4">Compras Pendientes</h1>
+    <h1 class="text-3xl font-bold mb-4">Compras Sin Picking Realizado</h1>
 
     <div class="overflow-x-auto">
         <table class="table-auto w-full border-collapse border border-gray-400">
@@ -76,14 +77,48 @@
             </thead>
             <tbody>
                 @foreach ($compras as $compra)
-                <tr>
-                    <td class="px-4 py-2">{{ $compra->id_compra }}</td>
-                    <td class="px-4 py-2">${{ $compra->precio_total }}</td>
-                    <td class="px-4 py-2">{{ $compra->tipo_despacho }}</td>
-                    <td class="px-4 py-2">{{ $compra->datos_despacho }}</td>
-                    <td class="px-4 py-2">{{ $compra->usuario }}</td>
+                @if ((isset($compra->picking) && $compra->picking === 0 || is_null($compra->picking)) && 
+                    (isset($compra->transferencia_pagada) && $compra->transferencia_pagada === 1 || is_null($compra->transferencia_pagada)))
+                    <tr>
+                        <td class="px-4 py-2">{{ $compra->id_compra }}</td>
+                        <td class="px-4 py-2">${{ $compra->precio_total }}</td>
+                        <td class="px-4 py-2">{{ $compra->tipo_despacho }}</td>
+                        <td class="px-4 py-2">{{ $compra->datos_despacho }}</td>
+                        <td class="px-4 py-2">{{ $compra->usuario }}</td>
+                    </tr>
+                @endif
+            @endforeach
+                    
+            </tbody>
+        </table>
+    </div>
+
+    <h1 class="text-3xl font-bold mb-4">Compras Con Picking Realizado</h1>
+
+    <div class="overflow-x-auto">
+        <table class="table-auto w-full border-collapse border border-gray-400">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="px-4 py-2">ID Compra</th>
+                    <th class="px-4 py-2">Precio Total</th>
+                    <th class="px-4 py-2">Tipo Despacho</th>
+                    <th class="px-4 py-2">Datos Despacho</th>
+                    <th class="px-4 py-2">Usuario</th>
                 </tr>
-                @endforeach
+            </thead>
+            <tbody>
+                @foreach ($compras as $compra)
+                @if ($compra->picking === 1)
+                    <tr>
+                        <td class="px-4 py-2">{{ $compra->id_compra }}</td>
+                        <td class="px-4 py-2">${{ $compra->precio_total }}</td>
+                        <td class="px-4 py-2">{{ $compra->tipo_despacho }}</td>
+                        <td class="px-4 py-2">{{ $compra->datos_despacho }}</td>
+                        <td class="px-4 py-2">{{ $compra->usuario }}</td>
+                    </tr>
+                @endif
+            @endforeach
+            
             </tbody>
         </table>
     </div>
