@@ -91,5 +91,6 @@ Route::post('/cambiar-despachado/{id}', [ProductController::class, 'cambiarDespa
 
 Route::post('/confirm-despacho/{id}', [ProductController::class, 'confirmDespacho'])->name('confirm-despacho');
 
+Route::post('/cambiar-estado/{id}', [ProductController::class, 'cambiarEstado'])->name('cambiar.estado');
 
 require __DIR__.'/auth.php';

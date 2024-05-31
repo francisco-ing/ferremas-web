@@ -46,7 +46,8 @@ class TransbankController extends Controller
             'tipo_despacho' => $tipo_delivery, 
             'despachado' => false,
             'datos_despacho' =>$calle,
-            'usuario' => $user->email
+            'usuario' => $user->email,
+            'picking' => false,
         ]);
 
         // Recuperar el ID de la última compra insertada

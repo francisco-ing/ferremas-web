@@ -96,31 +96,39 @@
     <h1 class="text-3xl font-bold mb-4">Compras Con Picking Realizado</h1>
 
     <div class="overflow-x-auto">
-        <table class="table-auto w-full border-collapse border border-gray-400">
-            <thead>
-                <tr class="bg-gray-200">
-                    <th class="px-4 py-2">ID Compra</th>
-                    <th class="px-4 py-2">Precio Total</th>
-                    <th class="px-4 py-2">Tipo Despacho</th>
-                    <th class="px-4 py-2">Datos Despacho</th>
-                    <th class="px-4 py-2">Usuario</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($compras as $compra)
-                @if ($compra->picking === 1)
-                    <tr>
-                        <td class="px-4 py-2">{{ $compra->id_compra }}</td>
-                        <td class="px-4 py-2">${{ $compra->precio_total }}</td>
-                        <td class="px-4 py-2">{{ $compra->tipo_despacho }}</td>
-                        <td class="px-4 py-2">{{ $compra->datos_despacho }}</td>
-                        <td class="px-4 py-2">{{ $compra->usuario }}</td>
-                    </tr>
-                @endif
-            @endforeach
-            
-            </tbody>
-        </table>
+        
+<table class="table-auto w-full border-collapse border border-gray-400">
+    <thead>
+        <tr class="bg-gray-200">
+            <th class="px-4 py-2">ID Compra</th>
+            <th class="px-4 py-2">Precio Total</th>
+            <th class="px-4 py-2">Tipo Despacho</th>
+            <th class="px-4 py-2">Datos Despacho</th>
+            <th class="px-4 py-2">Usuario</th>
+            <th class="px-4 py-2">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($compras as $compra)
+        @if ($compra->picking === 1)
+            <tr>
+                <td class="px-4 py-2">{{ $compra->id_compra }}</td>
+                <td class="px-4 py-2">${{ $compra->precio_total }}</td>
+                <td class="px-4 py-2">{{ $compra->tipo_despacho }}</td>
+                <td class="px-4 py-2">{{ $compra->datos_despacho }}</td>
+                <td class="px-4 py-2">{{ $compra->usuario }}</td>
+                <td class="px-4 py-2">
+                    <form action="{{ route('cambiar.estado', $compra->id_compra) }}" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas cambiar el estado a despachado?');">
+                        @csrf
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Despachar</button>
+                    </form>
+                </td>
+            </tr>
+        @endif
+        @endforeach
+    </tbody>
+</table>
+
     </div>
 </div>
 

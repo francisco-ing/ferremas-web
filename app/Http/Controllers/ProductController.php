@@ -211,6 +211,7 @@ class ProductController extends Controller
         'despachado' => false,
         'usuario' => $user->email,
         'transferencia_pagada' => false,
+        'picking' => false,
     ]);
 
     // Obtener el ID de la última compra insertada
@@ -316,6 +317,13 @@ class ProductController extends Controller
 
     public function confirmDespacho(Request $request, $id) {
         DB::table('compra')->where('id_compra', $id)->update(['picking' => true]);
+
+        return redirect()->back()->with('success', 'Compra marcada como despachada correctamente.');
+    }
+
+    public function cambiarEstado($id)
+    {
+        DB::table('compra')->where('id_compra', $id)->update(['despachado' => true]);
 
         return redirect()->back()->with('success', 'Compra marcada como despachada correctamente.');
     }
