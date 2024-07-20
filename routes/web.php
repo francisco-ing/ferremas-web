@@ -4,6 +4,7 @@ use App\Http\Controllers\TransbankController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductApiController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -92,5 +93,11 @@ Route::post('/cambiar-despachado/{id}', [ProductController::class, 'cambiarDespa
 Route::post('/confirm-despacho/{id}', [ProductController::class, 'confirmDespacho'])->name('confirm-despacho');
 
 Route::post('/cambiar-estado/{id}', [ProductController::class, 'cambiarEstado'])->name('cambiar.estado');
+
+Route::post('/contact/send', [ContactController::class, 'send'])->name('contact.send');
+
+Route::get('/contactSend', function () {
+    return view('contactSend');
+});
 
 require __DIR__.'/auth.php';
