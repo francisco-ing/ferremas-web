@@ -16,7 +16,7 @@
           <div class="flex items-start justify-between gap-4 py-8">
               <div class="flex gap-6">
                 <div class="h-64 bg-gray-100 p-6 rounded">
-                  <img src="{!! asset('images/Ferremas.png') !!}" class="w-full h-full object-contain shrink-0" />
+                  <img src="" class="w-full h-full object-contain shrink-0" alt="Product Image" />
                 </div>
                 <div>
                   <p class="text-md font-bold text-[#333]">{{ $details['nombre_producto']}}</p>

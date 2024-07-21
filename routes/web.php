@@ -61,7 +61,13 @@ Route::get('/admin', [ClientController::class, 'index'])->name('admin');
 
 // RUTA PARA API
 
-Route::apiResource('producto', ProductApiController::class);
+Route::get('producto', [ProductApiController::class, 'index']);
+Route::get('producto/{id}', [ProductApiController::class, 'show']);
+Route::post('producto', [ProductApiController::class, 'store']);
+Route::put('producto/{id}', [ProductApiController::class, 'update']);
+Route::delete('producto/{id}/', [ProductApiController::class, 'destroy']);
+
+//////////////////////////////////////////////////////////
 
 // RUTA PARA BODEGUERO
 Route::middleware(['auth'])->group(function () {

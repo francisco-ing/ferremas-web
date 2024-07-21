@@ -13,6 +13,8 @@
 
 <div class="container mx-auto py-8">
 
+   
+
         
         @if(session('success'))
          
@@ -51,12 +53,12 @@
                                   <button type="submit" class="ml-2 bg-gray-800 text-white py-1 px-4 rounded-lg hover:bg-gray-700">Agregar al carrito</button>
                               </div>
                             </form>
+                            
                            @else
                     @endif    
                     @endif               
                     </div>
             @endforeach
-
             <!-- Otras tarjetas de productos se pueden agregar aquí -->
         </div>
     </div>

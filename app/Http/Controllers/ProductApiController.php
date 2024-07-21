@@ -7,37 +7,38 @@ use Illuminate\Support\Facades\DB;
 
 class ProductApiController extends Controller
 {
-    // Obtener todos los productos
+
     public function index()
     {
-        $producto = DB::table('producto')->get();
-        return response()->json($producto, 200);
+        $products = DB::table('producto')->get();
+        return response()->json($products);
     }
 
-    // Obtener un producto específico
     public function show($id)
     {
-        $producto = DB::table('producto')->where('cod_producto', $id)->first();
-        if (is_null($producto)) {
-            return response()->json(['message' => 'Producto no encontrado'], 404);
+        $product = DB::table('producto')->where('cod_producto', $id)->first();
+
+        if ($product) {
+            return response()->json($product);
         }
-        return response()->json($producto, 200);
+
+        return response()->json(['message' => 'Product not found'], 404);
     }
 
-    // Crear un nuevo producto
-    public function store(Request $request)
+    public function store()
     {
-        $validatedData = $request->validate([
-            'nombre_producto' => 'required|string|max:50',
-            'marca' => 'required|string|max:50',
-            'precio' => 'required|integer',
-            'stock' => 'required|integer',
-            'cod_subcategoria' => 'required|integer',
-            'destacado' => 'required|boolean',
-            'imagen_producto' => 'required|string|max:255',
+        $request->validate([
+            'cod_producto' => 'sometimes|required|integer',
+            'nombre_producto' => 'sometimes|required|string|max:50',
+            'marca' => 'sometimes|nullable|string|max:50',
+            'precio' => 'sometimes|required|numeric',
+            'stock' => 'sometimes|nullable|integer',
+            'cod_subcategoria' => 'sometimes|nullable|integer',
+            'destacado' => 'sometimes|nullable|boolean',
+            'imagen_producto' => 'sometimes|nullable|string|max:255',
         ]);
-
-        $id = DB::table('producto')->insertGetId([            
+  
+        $id = DB::table('producto')->insertGetId([
             'cod_producto' => $request->cod_producto,
             'nombre_producto' => $request->nombre_producto,
             'marca' => $request->marca,
@@ -47,48 +48,50 @@ class ProductApiController extends Controller
             'destacado' => $request->destacado,
             'imagen_producto' => $request->imagen_producto,
         ]);
-
-        $producto = DB::table('producto')->where('cod_producto', $id)->first();
-        return response()->json($producto, 201);
+    
+        $producto = DB::table('producto')->where('cod_producto', $id)->last();
+        return response()->json($producto, 200);
     }
+    
 
-    // Actualizar un producto existente
     public function update(Request $request, $id)
     {
-        $product = DB::table('producto')->where('cod_producto', $id)->first();
-        if (is_null($product)) {
-            return response()->json(['message' => 'Producto no encontrado'], 404);
-        }
-
-        $validatedData = $request->validate([
-            'nombre_producto' => 'sometimes|string|max:50',
-            'marca' => 'sometimes|string|max:50',
-            'precio' => 'sometimes|integer',
-            'stock' => 'sometimes|integer',
-            'cod_subcategoria' => 'sometimes|integer',
-            'destacado' => 'sometimes|boolean',
-            'imagen_producto' => 'sometimes|string|max:255',
+        $request->validate([
+            'nombre_producto' => 'sometimes|nullable|string|max:50',
+            'marca' => 'sometimes|nullable|string|max:50',
+            'precio' => 'sometimes|nullable|numeric',
+            'stock' => 'sometimes|nullable|integer',
+            'cod_subcategoria' => 'sometimes|nullable|integer',
+            'destacado' => 'sometimes|nullable|boolean',
+            'imagen_producto' => 'sometimes|nullable|string|max:255',
         ]);
-
-        DB::table('producto')
-            ->where('cod_producto', $id)
-            ->update(array_merge($validatedData, [
-                'updated_at' => now(),
-            ]));
-
-        $updatedProduct = DB::table('producto')->where('cod_producto', $id)->first();
-        return response()->json($updatedProduct, 200);
+    
+        $updated = DB::table('producto')->where('cod_producto', $id)->update([
+            'nombre_producto' => $request->nombre_producto ?? DB::raw('nombre_producto'),
+            'marca' => $request->marca ?? DB::raw('marca'),
+            'precio' => $request->precio ?? DB::raw('precio'),
+            'stock' => $request->stock ?? DB::raw('stock'),
+            'cod_subcategoria' => $request->cod_subcategoria ?? DB::raw('cod_subcategoria'),
+            'destacado' => $request->destacado ?? DB::raw('destacado'),
+            'imagen_producto' => $request->imagen_producto ?? DB::raw('imagen_producto'),
+            'updated_at' => now(),
+        ]);
+    
+        if ($updated) {
+            $product = DB::table('producto')->where('cod_producto', $id)->first();
+            return response()->json($producto);
+        }
+    
+        return response()->json(['message' => 'Product not found'], 404);
     }
-
-    // Eliminar un producto
+    
     public function destroy($id)
     {
-        $producto = DB::table('producto')->where('cod_producto', $id)->first();
-        if (is_null($producto)) {
-            return response()->json(['message' => 'Producto no encontrado'], 404);
-        }
+        $deleted = DB::table('producto')->where('cod_producto', $id)->delete();
 
-        DB::table('producto')->where('cod_producto', $id)->delete();
-        return response()->json(null, 204);
+        if ($deleted) {
+            return response()->json(['message' => 'Product deleted successfully']);
+        }
+        return response()->json(['message' => 'Product not found'], 404);
     }
 }
